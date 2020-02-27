@@ -1,47 +1,18 @@
-/*chrome.webRequest.onHeadersReceived.addListener(function (details) {
-    
-    if (details.type == "main_frame") {
-        
-        for (var index in details.responseHeaders) {
-            var header = details.responseHeaders[index];
-            shouldShow = true;
-            console.log(header.name + " : " + header.value);
-            if(header.name == "Server" && header.value == "ServiceNow"){
-                setTimeout(function(){
-                    chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
-                    chrome.browserAction.setBadgeText({ "text": "YES", tabId: details.tabId });
-                }, 500);
-
-                break;
-            }
-
-        }
-    }
-},
-    { urls: ["<all_urls>"] },
-    ["responseHeaders"]);
-*/
-
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 'use strict';
-
-// Simple extension to remove 'Cookie' request header and 'Set-Cookie' response
-// header.
-
 function isServiceNow(headers) {
     var returnBool = false;
     headers.forEach(function (header) {
+        console.log(header);
         if (header.name === "Server" && header.value === "ServiceNow") {
             returnBool = true;
         }
     });
     return returnBool;
 };
+
 chrome.webRequest.onHeadersReceived.addListener(
-    function (details) {
+    // callback
+    function setIcon(details){
         setTimeout(function () {
             if (details.type == "main_frame") {
                 var isThisServiceNow = isServiceNow(details.responseHeaders);
@@ -68,9 +39,7 @@ chrome.webRequest.onHeadersReceived.addListener(
                         xhr.open('GET', url.origin + '/stats.do', true);
                         xhr.send(null);
                     } catch (e) {
-
                     }
-
                 }
             }
             return { responseHeaders: details.responseHeaders };
@@ -79,4 +48,4 @@ chrome.webRequest.onHeadersReceived.addListener(
     // filters
     { urls: ['https://*/*', 'http://*/*'] },
     // extraInfoSpec
-    ['blocking', 'responseHeaders', 'extraHeaders']);
+    ['blocking', 'responseHeaders']);
