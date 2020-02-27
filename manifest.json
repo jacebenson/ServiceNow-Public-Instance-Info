@@ -1,0 +1,19 @@
+{
+    "manifest_version": 2,
+    "name": "SerivceNow Checker",
+    "version": "0.1",
+    "background": {
+        "scripts": ["background.js"]
+      },
+      "permissions": [
+        
+        "activeTab",
+        "webRequest",
+        "http://*/*",
+        "https://*/*",
+        "webRequestBlocking"
+      ],
+      "browser_action": {
+        "default_title": "This extension will indicate the major family release of a ServiceNow instance if found."
+      }
+  }
