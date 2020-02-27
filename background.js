@@ -2,7 +2,6 @@
 function isServiceNow(headers) {
     var returnBool = false;
     headers.forEach(function (header) {
-        console.log(header);
         if (header.name === "Server" && header.value === "ServiceNow") {
             returnBool = true;
         }
